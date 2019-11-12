@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import {movies} from './movies';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './styles.css';
+import MoviePreview from './moviePreview';
+import MovieInformation from './movieInformation';
+
+class App extends Component {
+    _setCurrentMovie = (movie) =>
+        this.setState({
+            currentMovie: movie
+        });
+
+    constructor(props) {
+        super(props);
+
+        this.setCurrentMovie = this._setCurrentMovie.bind(this);
+
+        this.state = {
+            currentMovie: null
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                <MoviePreview
+                    movies={movies}
+                    setCurrentMovieFunction={this.setCurrentMovie}
+                />
+                <div>
+                    {
+                        this.state.currentMovie ?
+                            <MovieInformation
+                                currentMovie={this.state.currentMovie}
+                            />
+                            :
+                            <div className="select-movie">
+                                <p>Select a movie to see more information.</p>
+                            </div>
+                    }
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
